@@ -1,8 +1,6 @@
 'use strict';
 
-function swap(array, x, y) {
-  [array[x], array[y]] = [array[y], array[x]];
-}
+const utils = require('./utils');
 
 module.exports = {
   PARENT(i) {
@@ -35,7 +33,7 @@ module.exports = {
     }
 
     if(largest !== i) {
-      swap(heap, i, largest);
+      utils.swap(heap, i, largest);
       this.MAX_HEAPIFY(heap, largest);
     }
   },
@@ -52,7 +50,7 @@ module.exports = {
     this.BUILD_MAX_HEAP(heap);
 
     for(let i = (heap.length - 1); i > 0; --i) {
-      swap(heap, i, 0);
+      utils.swap(heap, i, 0);
       heap.size--;
 
       this.MAX_HEAPIFY(heap, 0);
@@ -93,7 +91,7 @@ module.exports = {
     while (i >=0 && heap[this.PARENT(i)] < heap[i]) {
       const parent = this.PARENT(i);
 
-      swap(heap, i, parent);
+      utils.swap(heap, i, parent);
 
       i = parent;
     }
