@@ -261,7 +261,7 @@ describe('RED-BLACK', function () {
           red_black.INSERT(tree, rightNode);
         });
 
-        it('deletes the node', function () {
+        it('removes the Root', function () {
           red_black.DELETE(tree, rootNode);
 
           expect(tree.root.key).to.be.equal(rightNode.key);
@@ -300,13 +300,13 @@ describe('RED-BLACK', function () {
         red_black.INSERT(tree, deletedNode3);
       });
 
-      it('deletes the node 35', function () {
+      it('removes the node 35', function () {
         red_black.DELETE(tree, deletedNode3);
 
         expect(tree.root.right.right).to.be.equal(red_black.nil);
       });
 
-      it('deletes the node 20', function () {
+      it('removes the node 20', function () {
         red_black.DELETE(tree, deletedNode);
 
         expect(tree.root.key).to.be.equal(35);
@@ -316,7 +316,7 @@ describe('RED-BLACK', function () {
         expect(tree.root.left.key).to.be.equal(30);
       });
 
-      it('deletes the node 40', function () {
+      it('removes the node 40', function () {
         red_black.DELETE(tree, deletedNode4);
 
         expect(tree.root.right.key).to.be.equal(35);
@@ -324,13 +324,79 @@ describe('RED-BLACK', function () {
         expect(tree.root.left.key).to.be.equal(20);
       });
 
-      it('deletes the root', function () {
+      it('removes the root', function () {
         red_black.DELETE(tree, rootNode);
 
         expect(tree.root.right.key).to.be.equal(40);
         expect(tree.root.left.key).to.be.equal(20);
       });
+
+      context('when 35 is removed', function () {
+        beforeEach(function () {
+          red_black.DELETE(tree, deletedNode3);
+        });
+
+        it('removes the node 20', function () {
+          //console.log(red_black.printTree(tree.root));          
+          red_black.DELETE(tree, deletedNode);
+
+          expect(tree.root.left).to.be.equal(red_black.nil);
+
+          expect(tree.root.right.color).to.be.equal(red_black.Color.RED);
+        });
+
+        context('when node 20 is removed', function () {
+          beforeEach(function () {
+            red_black.DELETE(tree, deletedNode);
+          });
+
+          it('removes the Root', function () {
+            red_black.DELETE(tree, rootNode);
+
+            expect(tree.root.key).to.be.equal(40);
+
+            expect(tree.root.color).to.be.equal(red_black.Color.BLACK);
+          });
+        });
+      });
     });
-    
+
+    context('when the tree 30-20-40-35-45', function () {
+      let deletedNode, deletedNode2, deletedNode3, deletedNode4, deletedNode5;
+
+      beforeEach(function () {
+        rootNode = new red_black.Node(30);
+        deletedNode = new red_black.Node(20);
+        deletedNode3 = new red_black.Node(35);
+        deletedNode4 = new red_black.Node(40);
+        deletedNode5 = new red_black.Node(45);
+        tree = newTree();
+
+        red_black.INSERT(tree, rootNode);
+        red_black.INSERT(tree, deletedNode);
+        red_black.INSERT(tree, deletedNode4);
+        red_black.INSERT(tree, deletedNode3);
+        red_black.INSERT(tree, deletedNode5);
+      });
+
+      context('when 40 is Red and 35 and 45 are Black', function () {
+        beforeEach(function () {
+          deletedNode4.color = red_black.Color.RED;
+          deletedNode3.color = deletedNode5.color = red_black.Color.BLACK;
+        });
+
+        it('removes node 20', function () {
+          red_black.DELETE(tree, deletedNode);
+
+          expect(tree.root.key).to.be.equal(40);
+
+          expect(tree.root.right.key).to.be.equal(45);
+
+          expect(tree.root.left.key).to.be.equal(30);
+
+          expect(tree.root.left.right.key).to.be.equal(35);
+        });
+      });
+    });
   });
 });

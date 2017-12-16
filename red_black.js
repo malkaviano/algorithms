@@ -238,7 +238,7 @@ module.exports = {
   DELETE(tree, node) {
     let double,
       promoted;
-      
+
     if (node.left === this.nil || node.right === this.nil) {
       double = node;
     } else {
@@ -274,7 +274,10 @@ module.exports = {
       if (node === node.parent.left) {
         let s = node.parent.right;
 
+        // Case 1: x’s sibling w is red
         if (s.color === this.Color.RED) {
+          console.log('Case 1');
+
           s.color = this.Color.BLACK;
           node.parent.color = this.Color.RED;
 
@@ -284,30 +287,42 @@ module.exports = {
         }
 
         if (s.right.color === this.Color.BLACK) {
+          // Case 2: x’s sibling w is black, and both of w’s children are black
           if (s.left.color === this.Color.BLACK) {
-            s.color = this.color.RED;
+            console.log('Case 2');
+
+            s.color = this.Color.RED;
 
             node = node.parent;
+            // Case 3: x’s sibling w is black, w’s left child is red, and w’s right child is black
           } else {
+            console.log('Case 3');
+
             s.left.color = this.Color.BLACK;
             s.color = this.Color.RED;
 
             this.ROTATE_RIGHT(tree, s);
+
+            s = node.parent.right;
           }
         }
 
-        s = node.parent.right;
-        s.color = node.parent.color;
-        node.parent.color = this.Color.BLACK;
-        s.right.color = this.Color.BLACK;
+        // Case 4: x’s sibling w is black, and w’s right child is red
+        if (s.color === this.Color.BLACK && s.right.color == this.Color.RED) {
+          console.log('Case 4');
 
-        this.ROTATE_LEFT(tree, node.parent);
+          s.color = node.parent.color;
+          node.parent.color = this.Color.BLACK;
+          s.right.color = this.Color.BLACK;
 
-        node = tree.root;
+          this.ROTATE_LEFT(tree, node.parent);
 
+          node = tree.root;
+        }
+        // Mirror
       } else {
         let s = node.parent.left;
-        
+
         if (s.color === this.Color.RED) {
           s.color = this.Color.BLACK;
           node.parent.color = this.Color.RED;
@@ -327,17 +342,20 @@ module.exports = {
             s.color = this.Color.RED;
 
             this.ROTATE_LEFT(tree, s);
+
+            s = node.parent.left;
           }
         }
-        
-        s = node.parent.left;
-        s.color = node.parent.color;
-        node.parent.color = this.Color.BLACK;
-        s.left.color = this.Color.BLACK;
 
-        this.ROTATE_RIGHT(tree, node.parent);
+        if (s.color === this.Color.BLACK && s.left.color == this.Color.RED) {
+          s.color = node.parent.color;
+          node.parent.color = this.Color.BLACK;
+          s.left.color = this.Color.BLACK;
 
-        node = tree.root;
+          this.ROTATE_RIGHT(tree, node.parent);
+
+          node = tree.root;
+        }
       }
     }
 
