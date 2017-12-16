@@ -1,8 +1,8 @@
 'use strict';
 
 const expect = require('chai').expect,
-  red_black = require('../red_black'),
-  utils = require('../utils');
+      red_black = require('../red_black'),
+      utils = require('../utils');
 
 function newTree() {
   return { root: red_black.nil };

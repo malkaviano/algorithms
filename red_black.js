@@ -324,6 +324,8 @@ module.exports = {
         let s = node.parent.left;
 
         if (s.color === this.Color.RED) {
+          console.log('Case 1');
+
           s.color = this.Color.BLACK;
           node.parent.color = this.Color.RED;
 
@@ -334,11 +336,15 @@ module.exports = {
 
         if (s.left.color === this.Color.BLACK) {
           if (s.right.color === this.Color.BLACK) {
+            console.log('Case 2');
+
             s.color = this.Color.RED;
 
             node = node.parent;
           } else {
-            s.left.color = this.Color.BLACK;
+            console.log('Case 3');
+
+            s.right.color = this.Color.BLACK;
             s.color = this.Color.RED;
 
             this.ROTATE_LEFT(tree, s);
@@ -348,6 +354,8 @@ module.exports = {
         }
 
         if (s.color === this.Color.BLACK && s.left.color == this.Color.RED) {
+          console.log('Case 4');
+
           s.color = node.parent.color;
           node.parent.color = this.Color.BLACK;
           s.left.color = this.Color.BLACK;
@@ -360,5 +368,16 @@ module.exports = {
     }
 
     node.color = this.Color.BLACK;
+  },
+  SEARCH(node, key) {
+    if(node === this.nil || node.key === key) return node;
+
+    let r = this.SEARCH(node.left, key);
+    
+    if(r.key !== key) {
+      r = this.SEARCH(node.right, key);
+    }
+    
+    return r;
   }
 }
