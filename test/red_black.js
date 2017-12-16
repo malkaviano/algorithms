@@ -396,6 +396,18 @@ describe('RED-BLACK', function () {
 
           expect(tree.root.left.right.key).to.be.equal(35);
         });
+
+        it('removes Root', function () {
+          red_black.DELETE(tree, rootNode);
+
+          expect(tree.root.key).to.be.equal(35);
+
+          expect(tree.root.right.key).to.be.equal(40);
+
+          expect(tree.root.left.key).to.be.equal(20);
+
+          expect(tree.root.right.right.key).to.be.equal(45);
+        });
       });
     });
   });
